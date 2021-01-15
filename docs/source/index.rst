@@ -14,7 +14,11 @@ Welcome to Secret-Share-Shamir-Scheme's documentation!
 
 Indices and tables
 ==================
+..automodule:: main
 
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+..automodule:: shamir.main
+:members:
