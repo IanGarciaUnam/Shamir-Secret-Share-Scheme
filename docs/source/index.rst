@@ -10,11 +10,11 @@ Welcome to Secret-Share-Shamir-Scheme's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+.. automodule:: main
 
 
 Indices and tables
 ==================
-.. automodule:: main
 
 * :ref:`genindex`
 * :ref:`modindex`

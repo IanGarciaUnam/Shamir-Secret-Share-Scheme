@@ -17,7 +17,7 @@ class cipher:
 		Args:
 			file(string): The route/file to be cihpered
 		"""
-		self.file=file
+		self.file=str(file)
 
 	def is_file(self):
 		"""
@@ -27,7 +27,7 @@ class cipher:
 		Return:
 			True |if it is a file - False|If it is not a file
 		"""
-		return os.path.isfile(self.file)
+		return os.path.isfile(str(self.file))
 
 	def encrypt():
 		pass
