@@ -4,7 +4,7 @@ import hashlib
 class operations:
 
 
-	@estaticmethod
+	@staticmethod
 	def input_invisible(show_to_public:str):
 		"""
 		The user can give him password in secret mode
@@ -13,7 +13,7 @@ class operations:
 		Return getpass.getpass(show_to_public)
 		"""
 		return getpass.getpass(show_to_public)
-
+	@staticmethod
 	def apply_sha_256(content:str):
 		"""
 		Apply SHA-256 to the content of the String

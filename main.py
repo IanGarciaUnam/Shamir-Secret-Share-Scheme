@@ -14,6 +14,8 @@ USO= "Usó"
 DESCRIPTION = "Shamir Secret  Share Scheme"
 
 def uso(**kwargs):
+	pass
 
-if __name== "__main__":
+if __name__== "__main__":
 	""" Executed when the program is initialized"""
+	pass
