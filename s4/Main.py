@@ -34,6 +34,16 @@ class Main:
 		c=Cifrador(secret, arch_original, file_frg)
 		c.cifra()
 
+	def main_exe_d_notStandard():
+		arch_frg=str("Archivo de fragmentos | File .frg: \n")
+		arch_cifrado=str("Archivo cifrado | Encrypted file:\n")
+		
+		"""
+		p=Polynomio(arch_frg)
+		key_sha=p.get_key()
+
+		"""
+
 
 
 
