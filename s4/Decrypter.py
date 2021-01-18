@@ -4,6 +4,7 @@ from Encrypter import Encrypter
 import hashlib
 
 class Decrypter:
+
     """
     A class that has decrypting methods
     """
@@ -18,6 +19,10 @@ class Decrypter:
         """
         self.iv = encrypter.get_cipherIV()
         self.key = hashlib.sha256(key.encode('utf8')).digest()
+
+    def __init__(self, encrypter, cryp_file, key):
+        self.iv = encrypter.get_cipherIV()
+        self.key = key
         self.cipher =  AES.new(self.key, AES.MODE_CBC, self.iv)
         self.file = cryp_file
         
@@ -36,6 +41,7 @@ class Decrypter:
         return decrypted_file
     
     def save_decrypted_file(self, new_name):
+
         """
         Saves the decrypted file
 
