@@ -1,30 +1,27 @@
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import unpad
 from Encrypter import Encrypter
+from LarangeInterpolation import LagrangeInterpolation
 import hashlib
 
 class Decrypter:
-
     """
     A class that has decrypting methods
     """
-    def __init__(self, encrypter, cryp_file, key):
+    def __init__(self, encrypter, cryp_file, shares):
         """
         Constrcut a decrypter method
 
         Args:
             encrypter (Encrypter): We obtain the IV from the original Encrypter
             cryp_file (str): Encrypted file
-            key (str): password from the Encrypter
+            shares (list): List of shares to use
         """
         self.iv = encrypter.get_cipherIV()
-        self.key = hashlib.sha256(key.encode('utf8')).digest()
-
-    def __init__(self, encrypter, cryp_file, key):
-        self.iv = encrypter.get_cipherIV()
-        self.key = key
-        self.cipher =  AES.new(self.key, AES.MODE_CBC, self.iv)
         self.file = cryp_file
+        self.n, self.k, self.p = encrypter.get_nkp()
+        self.lagrange = LagrangeInterpolation(self.p, self.n, self.k)
+        self.shares = shares
         
     def decipher_file(self):
         """
@@ -33,15 +30,31 @@ class Decrypter:
         Returns:
             file: Decrypted file
         """
-        with open(self.file, 'rb') as f:
-            encrypted_file = f.read()
+        try:
+            with open(self.file, 'rb') as f:
+                encrypted_file = f.read()
+        except:
+            print("There was an error while reading " + str(self.file))
+           
+        secret = self.get_secret() 
+        key = hashlib.sha256(str(secret).encode('utf8')).digest()
+        cipher = AES.new(key, AES.MODE_CBC, self.iv)
             
-        decrypted_file = unpad(self.cipher.decrypt(encrypted_file), AES.block_size)
+        decrypted_file = unpad(cipher.decrypt(encrypted_file), AES.block_size)
         
         return decrypted_file
     
-    def save_decrypted_file(self, new_name):
+    def get_secret(self):
+        """
+        Gets the password to decrypt the crypted file
 
+        Returns:
+            int: the password to decrypt
+        """
+        return self.lagrange.reconstruct_secret(self.shares, 0)
+        
+    
+    def save_decrypted_file(self, new_name):
         """
         Saves the decrypted file
 

@@ -6,7 +6,7 @@ from numpy.polynomial.polynomial import Polynomial as Poly
 from Field import Field
 import numpy.polynomial.polynomial as polynomial
 
-class Lagrange_Polynomial():
+class Polynomial():
     """
     A class used to apply Lagrange Interpolation method to find out secret
 
@@ -22,8 +22,8 @@ class Lagrange_Polynomial():
             n (int) : number of shares to generate
             key (int) : secret to save
         """
-        self.field_p = Field(prime_number)
-        self.key = self.generate_number(key)
+        self.p = prime_number
+        self.key = key
         self.partial_randomNumber = functools.partial(random.SystemRandom().randint, 0)
         self.k = k
         self.n = n
@@ -37,16 +37,12 @@ class Lagrange_Polynomial():
         Returns:
             list: List of coeficcients of a polynomial
         """
-        poly = [self.partial_randomNumber(self.field_p.get_prime() - 1) for i in range(self.k)]
+        poly = [self.partial_randomNumber(self.p - 1) for i in range(self.k)]
         
         poly[0] = self.key # Key
         
         return poly
     
-    def generate_number(self, key):
-        new_key = hashlib.sha256(key.encode('utf8')).digest()
-        
-        return int(new_key.hex(),base=16)
         
     def generate_random_shares(self):
         """
@@ -57,7 +53,7 @@ class Lagrange_Polynomial():
         """
         return [
             # We use % self.p below to take advantage of finite field arithmetic
-            (x, polynomial.polyval(x, self.polynomial.coef) % self.field_p.get_prime())
+            (x, polynomial.polyval(x, self.polynomial.coef) % self.p)
             for x in range(1, self.n + 1)
         ]
         
@@ -70,58 +66,7 @@ class Lagrange_Polynomial():
         """
         return self.polynomial
             
-    def lagrange_polynomial(self, i, x_points, x):
-        """
-        Reconstructs a Lagrange basis polynomial
 
-        Args:
-            i (int): [x_i]
-            x_points (list): vector of x points
-            x (int): value to find
-
-        Returns:
-            int: A Lagrange basis polynomial
-        """
-        num, dem = 1, 1 # We calculate each separately to avoid inexcat division
-        for j in range(len(x_points)):
-            if x_points[j] != i:
-                num *= x - x_points[j] # X - x_j
-                dem *= (i-x_points[j]) # x_i - x_j
-                
-        return self.field_p.division(num, dem) # (X - x_j) (x_i - x_j)^-1 -> where (x_i - x_j)^-1 is the inverse multiplicative
-    
-    def reconstruct_secret(self, shares, x):
-        """
-        Reconstructs the secret from a given list of shares
-
-        Args:
-            shares (list): share to use to reconstruct the secret
-            x (int): term to find
-
-        Raises:
-            ValueError: in case that the number of shares is not enough to reconstruct the secret
-
-        Returns:
-            int: the secret
-        """
-        if len(shares) < self.k:
-            raise ValueError("Unable to reconstruct the secret with this data")
-        
-        res = 0
-        
-        if len(shares) > self.k:
-            shares = shares[:self.k]
-            
-        x_points, y_points = zip(*shares)
-        for i in range(len(x_points)):
-            poly = self.lagrange_polynomial(x_points[i], x_points, x)
-            
-            product = (poly * y_points[i]) % self.field_p.get_prime()
-            
-            res += product
-            
-        return res % self.field_p.get_prime()
-            
                 
         
 
