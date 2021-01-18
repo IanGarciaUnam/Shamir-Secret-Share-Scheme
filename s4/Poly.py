@@ -22,7 +22,7 @@ class Lagrange_Polynomial():
             key (int) : secret to save
         """
         self.field_p = Field(prime_number)
-        self.key = key
+        self.key = int(key.hex(),base=16)
         self.partial_randomNumber = functools.partial(random.SystemRandom().randint, 0)
         self.k = k
         self.n = n
