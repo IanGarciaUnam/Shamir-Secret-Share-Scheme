@@ -1,5 +1,6 @@
 import random
 import functools
+import hashlib
 
 from numpy.polynomial.polynomial import Polynomial as Poly
 from Field import Field
@@ -22,7 +23,7 @@ class Lagrange_Polynomial():
             key (int) : secret to save
         """
         self.field_p = Field(prime_number)
-        self.key = key
+        self.key = self.generate_number(key)
         self.partial_randomNumber = functools.partial(random.SystemRandom().randint, 0)
         self.k = k
         self.n = n
@@ -41,6 +42,11 @@ class Lagrange_Polynomial():
         poly[0] = self.key # Key
         
         return poly
+    
+    def generate_number(self, key):
+        new_key = hashlib.sha256(key.encode('utf8')).digest()
+        
+        return int(new_key.hex(),base=16)
         
     def generate_random_shares(self):
         """
