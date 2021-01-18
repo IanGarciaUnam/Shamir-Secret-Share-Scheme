@@ -18,7 +18,7 @@ class Cifrador:
 		Params:
 			self. : The Cifrador's Object
 		"""
-		e=Encrypter(self.file, self.cifra_contrasena())
+		e=Encrypter(self.file, self.key)
 		e.encrypt_file()
 		new_file_name= Actuador.change_to_new_term(str(self.file),"aes")
 		e.save_encrypted_file(new_file_name)

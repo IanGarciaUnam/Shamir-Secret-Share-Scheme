@@ -2,12 +2,13 @@ import getpass as gt
 from Crypto.Cipher import AES
 import hashlib
 
-IV = "1234567890123456"
-BIG_PRIMO=208351617316091241234326746312124448251235562226470491514186331217050270460481
 class Actuador:
 
 	@staticmethod
 	def get_secret(show_to_public:str)->str:
+		"""
+		Get some string from the user withoud doing echo in the Terminal
+		"""
 		return gt.getpass(show_to_public)
 
 	@staticmethod
