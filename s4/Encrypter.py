@@ -9,11 +9,7 @@ class Encrypter:
         self.key = key
         self.mode = AES.MODE_CBC
         self.cipher = AES.new(self.key, self.mode)
-        
-    def normalize_lenght(self, file):
-        while len(file) % 16 != 0:
-            file = file + b'0' 
-        return file
+
         
     def encrypt_file(self):
         with open(self.file, 'rb') as f:
@@ -28,5 +24,4 @@ class Encrypter:
             
     def get_cipherIV(self):
         return self.cipher.iv
-    
-        
+

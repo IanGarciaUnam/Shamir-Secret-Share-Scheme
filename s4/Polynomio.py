@@ -1,10 +1,15 @@
-from random import random,randint
+import random
 import numpy as np
 import sympy as sym
 import hashlib
+import matplotlib.pyplot as plt
+from Cifrador import Cifrador 
+
+NUM=208351617316091241234326746312124448251235562226470491514186331217050270460481
+
 class Polynomio:
 
-	def __init__(self, n:int, t:int):
+	def __init__(self, n:int, t:int, key):
 		if n<t:
 			print("Number of members ought to be at least equals than minimum members")
 			raise ValueError
@@ -12,66 +17,52 @@ class Polynomio:
 		self.n=n
 		self.umbral=t
 		self.grado=t-1
+		self.key=key
 
 
 	def generate_x_y_values(self):
 		list_x_values=[]
 		list_y_values=[]
 		for x in range(self.grado):
-			x=randint(self.umbral, self.n)
-			y=randint(self.umbral,self.n)
-			if x in list_x_values:
-				x+=randint(self.grado, self.n)
-			if y in list_y_values:
-				y+=randint(self.grado, self.n)
-			list_x_values.append(x)
-			list_y_values.append(y)
+			x=random.getrandbits(256)
+			y=random.getrandbits(256)
+
+			list_x_values.append(x%NUM)
+			list_y_values.append(y%NUM)
+			list_x_values.append(0)
+			list_y_values.append(self.key)
 		return (list_x_values,list_y_values)
 
 
-	def generate_polynomio(self, list_xy_values:tuple, key):
-		xi,yi=list_xy_values
-		tamano = len(xi)
-		x= sym.Symbol('x')
-		polinomio=int(key, 16)
-		divisorL=np.zeros(tamano, dtype=float)
+	def generate_polynomio(self, list_values_x, list_values_y):
+		"""
+		"""
+		polinomio=0
+		for i in range(len(list_values_x)):
 
-		for i in range(0,tamano,1):
-			num=1
-			den=1
-			for j in range(0,tamano,1):
-				if j!=i:
-					num*=x-xi[j]
-					den*=xi[i]-xi[j]
-		terminoLi=num/den
+			polinomio+=list_values_y[i]*self.multiplicador(i,list_values_x)
 
-		polinomio+=terminoLi*yi[i]
-		divisorL[i]=den
+		print(polinomio)
+		pxi=sym.expand(polinomio)
+		sym.sympify(pxi)
+		px=sym.lambdify(x,pxi)
+	
 
-		polinomio_simplified= polinomio.expand()
-		px = sym.lambdify(x,polinomio_simplified)
-		self.px=px
+	@staticmethod
+	def multiplicador(i,list_values_x):
+		num=1
+		den=1
+		x=sym.Symbol('x')
+		div=np.zeros(len(list_values_x), dtype=float)
+		for j in range(i):
+			if(i!=j):
+				num*=x-list_values_x[j]
+				den*=list_values_x[i]-list_values_x[j]
+		div=num/den
+		return div
 
-	def calculate_point(self, x):
-		return self.px(x)
-
-
-p = Polynomio(30,15)
+c=Cifrador("Hola")
+key_value=c.cifra_contrasena()
+p=Polynomio(10,5, key_value)
 x,y=p.generate_x_y_values()
-key="Hola"
-key_sha=hashlib.sha256(key.encode()).hexdigest()
-p.generate_polynomio((x,y), key_sha)
-
-print("Key:")
-print(int(key_sha,16))
-
-print((x,y))
-for xi in x:
-	print(xi)
-	print(p.calculate_point(xi))
-
-y_entero=p.calculate_point(0)
-y_hexa=hex(y_entero)
-
-print(int(y_hexa,16))
-
+p.generate_polynomio(x,y)
