@@ -5,23 +5,11 @@ from Actuador import Actuador
 
 class Cifrador:
 
-	def __init__(self,key,file):
+	def __init__(self,key,file_orig, file_frg):
 		self.key=key
 		self.file=file
 		self.encrypter=None
-
-
-	def cifra_contrasena(self):
-		"""
-		Appy SHA-256 with the user's key as a parameter
-		Params:
-			key: str, passed by the user
-		Returns:
-			int of 256 bits
-
-		"""
-		return hashlib.sha256(self.key.encode()).digest()
-
+		self.file_frg=file_frg
 
 	def cifra(self):
 		"""
@@ -39,12 +27,11 @@ class Cifrador:
 	def descifra(self, key_sha, cryp_file, original_ext):
 		if key_sha==None or self.encrypter==None:
 			print("Clave o descifrador no conocido")
-			return 
-			
+			return
+
 		d=Decrypter(self.encrypter, cryp_file, key_sha)
 		d.decipher_file()
 		d.save_decrypted_file(Actuador.change_to_new_term(cryp_file, original_ext))
-
 
 
 
