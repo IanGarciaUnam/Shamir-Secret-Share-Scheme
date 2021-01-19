@@ -20,7 +20,6 @@ class Decrypter:
         self.iv = encrypter.get_cipherIV()
         self.file = cryp_file
         self.n, self.k, self.p = encrypter.get_nkp()
-        self.lagrange = LagrangeInterpolation(self.p, self.n, self.k)
         self.shares = shares
         
     def decipher_file(self):
@@ -37,7 +36,8 @@ class Decrypter:
             print("There was an error while reading " + str(self.file))
            
         secret = self.get_secret() 
-        key = hashlib.sha256(str(secret).encode('utf8')).digest()
+        num = str(secret)
+        key = hashlib.sha256(num.encode('utf8')).digest()
         cipher = AES.new(key, AES.MODE_CBC, self.iv)
             
         decrypted_file = unpad(cipher.decrypt(encrypted_file), AES.block_size)
@@ -51,7 +51,7 @@ class Decrypter:
         Returns:
             int: the password to decrypt
         """
-        return self.lagrange.reconstruct_secret(self.shares, 0)
+        return LagrangeInterpolation.reconstruct_secret(self.shares, 0, self.k)
         
     
     def save_decrypted_file(self, new_name):

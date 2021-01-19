@@ -1,11 +1,9 @@
 from Field import Field
+field = Field(208351617316091241234326746312124448251235562226470491514186331217050270460481)
 class LagrangeInterpolation:
-    def __init__(self, prime, n, k):
-        self.field = Field(prime)
-        self.k = k
-        self.n = n
-        
-    def lagrange_polynomial(self, i, x_points, x):
+    
+    @staticmethod  
+    def lagrange_polynomial(i, x_points, x):
         """
         Reconstructs a Lagrange basis polynomial
 
@@ -23,9 +21,10 @@ class LagrangeInterpolation:
                 num *= x - x_points[j] # X - x_j
                 dem *= (i-x_points[j]) # x_i - x_j
                 
-        return self.field.division(num, dem) # (X - x_j) (x_i - x_j)^-1 -> where (x_i - x_j)^-1 is the inverse multiplicative
+        return field.division(num, dem) # (X - x_j) (x_i - x_j)^-1 -> where (x_i - x_j)^-1 is the inverse multiplicative
     
-    def reconstruct_secret(self, shares, x):
+    @staticmethod
+    def reconstruct_secret(shares, x, k):
         """
         Reconstructs the secret from a given list of shares
 
@@ -39,20 +38,20 @@ class LagrangeInterpolation:
         Returns:
             int: the secret
         """
-        if len(shares) < self.k:
+        if len(shares) < k:
             raise ValueError("Unable to reconstruct the secret with this data")
         
         res = 0
         
-        if len(shares) > self.k:
-            shares = shares[:self.k]
+        if len(shares) > k:
+            shares = shares[:k]
             
         x_points, y_points = zip(*shares)
         for i in range(len(x_points)):
-            poly = self.lagrange_polynomial(x_points[i], x_points, x)
+            poly = LagrangeInterpolation.lagrange_polynomial(x_points[i], x_points, x)
             
-            product = (poly * y_points[i]) % self.field.get_prime()
+            product = (poly * y_points[i]) % field.get_prime()
             
             res += product
             
-        return res % self.field.get_prime()
+        return res % field.get_prime()
