@@ -5,10 +5,9 @@ from Actuador import Actuador
 
 class Cifrador:
 
-	def __init__(self,key,file_orig, file_frg):
+	def __init__(self,key,file_orig):
 		self.key=key
 		self.file=file
-		self.encrypter=None
 		self.file_frg=file_frg
 
 	def cifra(self):
@@ -22,14 +21,18 @@ class Cifrador:
 		e.encrypt_file()
 		new_file_name= Actuador.change_to_new_term(str(self.file),"aes")
 		e.save_encrypted_file(new_file_name)
-		self.encrypter=e
+
+class Descifrador:
+	def __init__(file_frg):
+		self.file_frg=file_frg
+
 		
 	def descifra(self, key_sha, cryp_file, original_ext):
-		if key_sha==None or self.encrypter==None:
+		if key_sha==None:
 			print("Clave o descifrador no conocido")
 			return
 
-		d=Decrypter(self.encrypter, cryp_file, key_sha)
+		d=Decrypter(self.encrypter, self.file_frg, key_sha)
 		d.decipher_file()
 		d.save_decrypted_file(Actuador.change_to_new_term(cryp_file, original_ext))
 

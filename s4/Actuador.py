@@ -24,3 +24,16 @@ class Actuador:
 		original=original_name.split(".")[0]
 		original+="."+new_ext
 		return original
+	def convert_list_in_file(list_out,file_frg):
+		arch=open(file_frg, "w")
+		for (x,y) in list_out:
+			arch.write("%d,%d",x,y)
+		arch.close()
+
+	@staticmethod
+	def convert_file_in_list(file_frg)->list:
+		out_list=[]
+		arch= open(file_frg, "r")
+		for line in arch.readlines():
+			print("")
+

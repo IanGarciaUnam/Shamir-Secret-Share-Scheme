@@ -8,7 +8,7 @@ class Encrypter:
         self.file = in_file
         self.key = key
         self.mode = AES.MODE_CBC
-        self.cipher = AES.new(self.key, self.mode)
+        self.cipher = get_encrypted_file(key)#AES.new(self.key, self.mode)
 
         
     def encrypt_file(self):
@@ -24,4 +24,8 @@ class Encrypter:
             
     def get_cipherIV(self):
         return self.cipher.iv
+
+    def get_encrypted_key(key):
+        return AES.new(key, AES.MODE_CBC)
+
 

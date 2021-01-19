@@ -1,48 +1,80 @@
 import sys as system
-from Cifrador import Cifrador
+from Encrypter import Encrypter
+from Cifrador import Cifrador, Descifrador
 from Actuador import Actuador
-class Main:
+import os
+import sys as System
+USO="Usage python main.py [c|d] <file-original> <total-points required >1 > <total> \"minimum points required\" >1> "
+PRIMO=208351617316091241234326746312124448251235562226470491514186331217050270460481
+class Manager:
 
-	@staticmethod
-	def main_exe_c_notStandard():
-		"""
-		Allows the user to enter his own data to crypt the file
-		"""
-		arch_frg=str(input("Nombre del archivo para fragmentos: | File for frg\n"))
-		eva_max:int=0
-		eva_min:int=0
-		arch_original:str=""
-		secret:str=""
-		while True:
-			try:
-				eva_max=int(input("Número de evaluaciones máximas / Total de integrantes: \n"))
-				if eva_max>2:
-					break;
-			except:
-				print("Tu dato debe ser un  valor entero |Mayor que 2/ Your data should be an integer, integer must be greater than 2 i>2\n")
-		while True:
-			try:
-				eva_min=int(input("Número de evaluaciones mínimas / Mínimo de integrantes para descifrar el archivo\n"))
-				if eva_min>1 and eva_min <= eva_max:
-					break;
-			except:
-				print("Tu dato debe ser un  valor entero| Mayor que 1 y Menor que evaluaciones máximas / Your data should be an integer, integer must be 1<i<=n\n")
+	def __init__(self, file_original:str, total_points:int, minimum_points:int):
+		if not os.path.exists(file_original) or not os.path.isfile(file_original):
+			print("Check your original file- The path is wrong or the file doesn't exists\n")
+			print(USO)
+			System.exit()
 
-		arch_original=str(input("Archivo claro: \n"))
-		secret = Actuador.get_secret("Ingresa tu contraseña | Password for :\t")
-		sys.clear()
-		c=Cifrador(secret, arch_original, file_frg)
+		if not isInstance(total_points,int):
+			print("Total Points is not an integer value, check your data\n")
+			print(USO)
+			System.exit()
+		if not isInstance(minimum_points, int):
+			print("Minimum points required is not an Integer value, check your data\n")
+			print(USO)
+			System.exit()
+		if minimum_points > total_points:
+			print("Total points ought to be bigger or at least equals than Minimum points\n")
+			print(USO)
+			System.exit()
+		self.file_original=file_original
+		self.total_points=total_points
+		self.minimum_points=minimum_points
+
+
+	def work_to_cipher(self):
+		secret = Actuador.get_secret("Please type your password [We will keep it secret]")
+		key=int(Encrypter.get_encrypted_key(secret),16)
+		p = Polynomio(PRIMO, self.minimum_points, self.total_points, key)
+		c= Cifrador(secret,self.file_original)
 		c.cifra()
+		out_list=p.generate_random_shares()
+		frg_file=Actuador.change_to_new_term(self.file_original,"frg")
+		Actuador.convert_list_in_file(out_list, frg_file)
 
-	def main_exe_d_notStandard():
-		arch_frg=str("Archivo de fragmentos | File .frg: \n")
-		arch_cifrado=str("Archivo cifrado | Encrypted file:\n")
+class Verifier_Builder:
+	def __init__(self, file_frg, encrypted_file):
+		if not os.path.exists(file_frg) or not os.path.isfile(file_frg):
+			print("Check your original file- The path is wrong or the file doesn't exists\n")
+			print(USO)
+			System.exit()
+		if not os.path.exists(encrypted_file) or not os.path.isfile(encrypted_file):
+			print("Check your original file- The path is wrong or the file doesn't exists\n")
+			print(USO)
+			System.exit()
+
+
+	def work_to_descipher(self):
+		list_in=Actuador.convert_file_in_list(self.file_frg)
+		#p=Polinomio() #Not wprking but it is an idealization
+		#key=p.reconstruct_secret(list_in, 0) #Not Woring but is an idealization
+		d=Descifrador(file_frg)
+		d.descifra(key,self.file_frg, Actuador.get_original_ext(file_frg))
+
 		
-		"""
-		p=Polynomio(arch_frg)
-		key_sha=p.get_key()
 
-		"""
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
