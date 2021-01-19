@@ -27,7 +27,9 @@ class Actuador:
 	def convert_list_in_file(list_out,file_frg):
 		arch=open(file_frg, "w")
 		for (x,y) in list_out:
-			arch.write("%d,%d",x,y)
+			chain=str(x)+","+str(y)+"\n"
+			arch.write(chain)
+
 		arch.close()
 
 	@staticmethod

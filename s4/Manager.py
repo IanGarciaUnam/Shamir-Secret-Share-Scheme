@@ -2,6 +2,8 @@ import sys as system
 from Encrypter import Encrypter
 from Cifrador import Cifrador, Descifrador
 from Actuador import Actuador
+from LaGrangeInterpolation import LagrangeInterpolation as LGI
+from Poly import Polynomial as Polynomio
 import os
 import sys as System
 USO="Usage python main.py [c|d] <file-original> <total-points required >1 > <total> \"minimum points required\" >1> "
@@ -14,11 +16,11 @@ class Manager:
 			print(USO)
 			System.exit()
 
-		if not isInstance(total_points,int):
+		if not isinstance(total_points,int):
 			print("Total Points is not an integer value, check your data\n")
 			print(USO)
 			System.exit()
-		if not isInstance(minimum_points, int):
+		if not isinstance(minimum_points, int):
 			print("Minimum points required is not an Integer value, check your data\n")
 			print(USO)
 			System.exit()
@@ -33,10 +35,10 @@ class Manager:
 
 	def work_to_cipher(self):
 		secret = Actuador.get_secret("Please type your password [We will keep it secret]")
-		key=int(Encrypter.get_encrypted_key(secret),16)
-		p = Polynomio(PRIMO, self.minimum_points, self.total_points, key)
 		c= Cifrador(secret,self.file_original)
 		c.cifra()
+		key=c.get_key_number()
+		p = Polynomio(PRIMO, self.minimum_points, self.total_points, key)
 		out_list=p.generate_random_shares()
 		frg_file=Actuador.change_to_new_term(self.file_original,"frg")
 		Actuador.convert_list_in_file(out_list, frg_file)
@@ -55,8 +57,7 @@ class Verifier_Builder:
 
 	def work_to_descipher(self):
 		list_in=Actuador.convert_file_in_list(self.file_frg)
-		#p=Polinomio() #Not wprking but it is an idealization
-		#key=p.reconstruct_secret(list_in, 0) #Not Woring but is an idealization
+		key= LGI.reconstruct_secret(list_in, 0) #Not Woring but is an idealization
 		d=Descifrador(file_frg)
 		d.descifra(key,self.file_frg, Actuador.get_original_ext(file_frg))
 

@@ -7,8 +7,14 @@ class Cifrador:
 
 	def __init__(self,key,file_orig):
 		self.key=key
-		self.file=file
-		self.file_frg=file_frg
+		self.file=file_orig
+		self.encrypter=None
+
+	def get_key_number(self):
+		if self.encrypter==None:
+			raise ValueError("You need to apply cifra(), before get_key_number")
+
+		return self.encrypter.get_key()
 
 	def cifra(self):
 		"""
@@ -17,10 +23,12 @@ class Cifrador:
 		Params:
 			self. : The Cifrador's Object
 		"""
+
 		e=Encrypter(self.file, self.key)
 		e.encrypt_file()
 		new_file_name= Actuador.change_to_new_term(str(self.file),"aes")
 		e.save_encrypted_file(new_file_name)
+		self.encrypter=e
 
 class Descifrador:
 	def __init__(file_frg):
@@ -32,9 +40,9 @@ class Descifrador:
 			print("Clave o descifrador no conocido")
 			return
 
-		d=Decrypter(self.encrypter, self.file_frg, key_sha)
-		d.decipher_file()
-		d.save_decrypted_file(Actuador.change_to_new_term(cryp_file, original_ext))
+		#d=Decrypter(self.encrypter, self.file_frg, key_sha)
+		#d.decipher_file()
+		#d.save_decrypted_file(Actuador.change_to_new_term(cryp_file, original_ext))
 
 
 
