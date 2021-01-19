@@ -6,6 +6,7 @@ from LaGrangeInterpolation import LagrangeInterpolation as LGI
 from Poly import Polynomial as Polynomio
 import os
 import sys as System
+
 USO="Usage python main.py [c|d] <file-original> <total-points required >1 > <total> \"minimum points required\" >1> "
 PRIMO=208351617316091241234326746312124448251235562226470491514186331217050270460481
 class Manager:

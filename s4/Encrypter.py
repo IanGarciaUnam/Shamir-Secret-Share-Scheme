@@ -93,12 +93,3 @@ class Encrypter:
         num = str(key)
         return hashlib.sha256(num.encode('utf8')).digest()
     
-    def get_nkp(self):
-        """
-        Returns a tri-tuple of n, k and p
-
-        Returns:
-            tuple: tri-tuple of n, k and p
-        """
-        return (self.n, self.k, self.prime)
-        
