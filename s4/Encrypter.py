@@ -20,7 +20,7 @@ class Encrypter:
         self.key = self.generate_number(key)
         self.mode = AES.MODE_CBC
         self.prime = prime_number
-        self.cipher = AES.new(str(self.alphanumric_pass(self.key)), self.mode)
+        self.cipher = AES.new(self.alphanumric_pass(self.key), self.mode)
         self.n = n
         self.k = k
         self.poly = Polynomial(self.prime, self.k, self.n, self.key) # We construct the random polynomial
@@ -78,7 +78,7 @@ class Encrypter:
             int: new password
         """
         secret = hashlib.sha256(key.encode('utf8')).digest()
-        secret_int = int(secret.hex(), base=16)
+        secret_int = int(secret.hex(),base=16)
         
         return secret_int
     
@@ -92,7 +92,8 @@ class Encrypter:
         Returns:
             str: pass with sha256 applied
         """
-        return hashlib.sha256(key.encode('utf8')).digest()
+        num = str(key)
+        return hashlib.sha256(num.encode('utf8')).digest()
     
     def get_nkp(self):
         """
