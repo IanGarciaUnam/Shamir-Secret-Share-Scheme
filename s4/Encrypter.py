@@ -2,7 +2,7 @@ from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad
 
 from Crypto import Random
-from Poly import Polynomial
+from Polynomio import Lagrange_Polynomial
 import hashlib
 import random
 import sys
@@ -20,7 +20,7 @@ class Encrypter:
             k (int) = mininum number of shares
         """
         self.file = in_file
-        self.key = self.generate_number(key)
+        self.key = key#self.generate_number(key)
         self.mode = AES.MODE_CBC
 
         self.cipher = AES.new(self.alphanumric_pass(self.key), self.mode)
@@ -59,17 +59,12 @@ class Encrypter:
         Returns:
             file: The file encrypted with AES
         """
-
-        try:
-            
-            with open(self.file, 'rb') as f:
-                orig_file = f.read()
-                
-            enc_text = self.encrypt_text(orig_file)
         
-        except:
-            print("The file: " + str(self.file) + " does not exist")
-            sys.exit(1)
+            
+        with open(self.file, 'rb') as f:
+            orig_file = f.read()
+        enc_text = self.encrypt_text(orig_file)
+
         
 
         with open(self.file, 'rb') as f:

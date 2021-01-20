@@ -40,9 +40,9 @@ class Descifrador:
 			print("Clave o descifrador no conocido")
 			return
 
-		#d=Decrypter(self.encrypter, self.file_frg, key_sha)
-		#d.decipher_file()
-		#d.save_decrypted_file(Actuador.change_to_new_term(cryp_file, original_ext))
+		d=Decrypter(self.encrypter, self.file_frg, key_sha)
+		d.decipher_file()
+		d.save_decrypted_file(Actuador.change_to_new_term(cryp_file, original_ext))
 
 
 

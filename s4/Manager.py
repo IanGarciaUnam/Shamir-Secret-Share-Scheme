@@ -3,7 +3,7 @@ from Encrypter import Encrypter
 from Cifrador import Cifrador, Descifrador
 from Actuador import Actuador
 from LaGrangeInterpolation import LagrangeInterpolation as LGI
-from Poly import Polynomial as Polynomio
+from Polynomio import Lagrange_Polynomial as Polynomio
 import os
 import sys as System
 
