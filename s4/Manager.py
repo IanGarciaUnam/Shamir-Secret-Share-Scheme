@@ -8,10 +8,24 @@ import os
 import sys as System
 
 USO="Usage python main.py [c|d] <file-original> <total-points required >1 > <total> \"minimum points required\" >1> "
+""" Usage"""
 PRIMO=208351617316091241234326746312124448251235562226470491514186331217050270460481
+""" BIG PRIMO OF 257 """
 class Manager:
+	"""
+	Class used to verify mistakes that could be done by user's entry and complete the work of each option as
+	Crypt and Decrypt
+	"""
 
 	def __init__(self, file_original:str, total_points:int, minimum_points:int):
+		"""
+		Manager Builder
+
+		Args:
+			file_original(str): Original File to be encrypted
+			total_points(int): Maximum of shares to be generated
+			minimum_points(int): Polynomial degree 
+		"""
 		if not os.path.exists(file_original) or not os.path.isfile(file_original):
 			print("Check your original file- The path is wrong or the file doesn't exists\n")
 			print(USO)
@@ -30,11 +44,18 @@ class Manager:
 			print(USO)
 			System.exit()
 		self.file_original=file_original
+		""" Original file to be decrypted"""
 		self.total_points=total_points
+		""" Maximum of shares to be generated"""
 		self.minimum_points=minimum_points
+		""" Polynomial Degree """
 
 
 	def work_to_cipher(self):
+		"""
+		Cipher the file, generate the frg and aes file
+
+		"""
 		secret = Actuador.get_secret("Please type your password [We will keep it secret]")
 		c= Cifrador(secret,self.file_original)
 		c.cifra()
@@ -45,24 +66,43 @@ class Manager:
 		Actuador.convert_list_in_file(out_list, frg_file)
 
 class Verifier_Builder:
+	"""
+	Class done to verify the user's parameters to decode a crypted file
+	and decrypt it, reconstruiting the Polynomio and evaluating it in "0"
+
+	"""
 	def __init__(self, file_frg, encrypted_file):
+		"""
+		Verifier_Builder  Builder
+
+		Args:
+			file_frg(str): frg file, that contains tuple of (x,y) pairs
+			encrypted_file(str): FIle to be decrypted
+
+		"""
 		if not os.path.exists(file_frg) or not os.path.isfile(file_frg):
 			print("Check your original file- The path is wrong or the file doesn't exists\n")
 			print(USO)
-			System.exit()
+			System.exit(1)
 		if not os.path.exists(encrypted_file) or not os.path.isfile(encrypted_file):
 			print("Check your original file- The path is wrong or the file doesn't exists\n")
 			print(USO)
 			System.exit(1)
 		self.file_frg=file_frg
+		""" File frg """
 		self.encrypted_file=encrypted_file
+		""" File encrypted .aes"""
 
 
 	def work_to_descipher(self):
+		"""
+		Analyze fragments of tuples and decrypt the aes file and save it in a safe way
+		
+		"""
 		list_in=Actuador.convert_file_in_list(self.file_frg)
 		key= LGI.reconstruct_secret(list_in, 0) #Not Woring but is an idealization
 		d=Descifrador(self.file_frg)
-		d.descifra(key,self.encrypted_file, Actuador.get_original_ext(str(self.encrypted_file)))
+		d.descifra(self.encrypted_file, Actuador.get_original_ext(str(self.encrypted_file)))
 
 		
 

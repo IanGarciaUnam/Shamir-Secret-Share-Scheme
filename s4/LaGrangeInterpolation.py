@@ -2,6 +2,10 @@ import sys
 from Field import Field
 field = Field(208351617316091241234326746312124448251235562226470491514186331217050270460481)
 class LagrangeInterpolation:
+    """
+    Class that brings statics methods for works that should be done without 
+    taking creating the same objects as Encryption needs
+    """
     
     @staticmethod  
     def lagrange_polynomial(i, x_points, x):

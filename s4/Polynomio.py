@@ -14,6 +14,7 @@ class Lagrange_Polynomial():
     def __init__(self, prime_number, k, n,key):
         """
         Constructs Lagrange Polymial given a prime to use finite field arithmetic
+        
         Args:
             prime_number (int): prime number to use finite field arithmetic
             k (int) : minimun number of shares to reconstruct the polynomial
@@ -21,11 +22,17 @@ class Lagrange_Polynomial():
             key (int) : secret to save
         """
         self.field_p = Field(prime_number)
+        """ (Field) : Object Field"""
         self.key = key
+        """ key as the secret given"""
         self.partial_randomNumber = functools.partial(random.SystemRandom().randint, 0)
+        """ Random Number"""
         self.k = k
+        """ Polynomial Degree"""
         self.n = n
+        """ Maximum of shares to be generated"""
         self.polynomial = Poly(self.generate_random_poly())
+        """ Polinomio generated"""
         
         
     def generate_random_poly(self):

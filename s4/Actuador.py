@@ -3,11 +3,16 @@ from Crypto.Cipher import AES
 import hashlib
 
 class Actuador:
-
+	"""
+	A class that provides diverses statics methods, helping in repetitive works
+	"""
 	@staticmethod
 	def get_secret(show_to_public:str)->str:
 		"""
 		Get some string from the user withoud doing echo in the Terminal
+		
+		Args:
+			show_to_public: Mensaje al usuario
 		"""
 		return gt.getpass(show_to_public)
 
@@ -15,16 +20,28 @@ class Actuador:
 	def change_to_new_term(original_name, new_ext):
 		"""
 		Change the original extension of the file to the new one
-		Params:
-		original_name: str
-		new_ext:str
-		Return:
-		The new str: in fussion
+
+		Args:
+			original_name: str
+			new_ext:str
+
+		Returns:
+			The new str: in fussion
 		"""
 		original=original_name.split(".")[0]
 		original+="."+new_ext
 		return original
 	def convert_list_in_file(list_out,file_frg):
+		"""
+		Exclusively designated for frg's files that contains tuples of</n>
+		number and digits, process and analyse a file, becoming each tuple to line of a frg
+
+		Args:
+			list_out:list tuple list
+			file_frg: name of a frg file to be written
+		
+
+		"""
 		arch=open(file_frg, "w")
 		for (x,y) in list_out:
 			chain=str(x)+","+str(y)+"\n"
@@ -34,6 +51,16 @@ class Actuador:
 
 	@staticmethod
 	def convert_file_in_list(file_frg)->list:
+		"""
+		Exclusively designated for frg's files that contains tuples
+		Each line is readed and transform into a tuple added to the list
+		
+		Args: 
+			file_frg(str): File frg
+
+		Returns:
+			out_list:list :tuple list
+		"""
 		out_list=[]
 		arch= open(file_frg, "r")
 		for line in arch.readlines():
@@ -45,6 +72,15 @@ class Actuador:
 
 	@staticmethod
 	def get_original_ext(encrypted_file:str):
+		"""
+		Read the name of an encrypted file and return the original extension of the .aes file
+		
+		Args:
+			encrypted_file:str : file.ext.aes to be Readed
+		
+		Returns:
+			str: the original extension
+		"""
 		chain=encrypted_file.split(".")
 		return chain[1]
 

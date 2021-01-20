@@ -5,13 +5,34 @@ import hashlib
 from Actuador import Actuador
 
 class Cifrador:
+	"""
+	This class is  a Manager of Encrypter Class, simplify the work of developer
+	to encrypte a file
+	"""
 
 	def __init__(self,key,file_orig):
+		"""
+		Builder of Cifrador
+
+		Param:
+			key(str)--Key given by the user 
+			file_orig(str)--Original file to be encrypted
+			
+		"""
 		self.key=key
+		""" key(str) = Given as a string from the user"""
 		self.file=file_orig
+		""" file(str) = Original File"""
 		self.encrypter=None
+		""" encrypter(Encrypter) =given as a None """
 
 	def get_key_number(self):
+		"""
+		Return the 256-Big Integer Number, after apply the encrypter methods
+		
+		Return:
+			Big Integer-key
+		"""
 		if self.encrypter==None:
 			raise ValueError("You need to apply cifra(), before get_key_number")
 
@@ -21,25 +42,39 @@ class Cifrador:
 		"""
 		A method that encrypte the file a write the encrypted one in the 
 		same route
+
 		Params:
 			self. : The Cifrador's Object
 		"""
-
 		e=Encrypter(self.file, self.key)
 		e.encrypt_file()
 		new_file_name= Actuador.change_to_new_term(str(self.file),"aes")
 		e.save_encrypted_file(new_file_name)
 		self.encrypter=e
 
+
+
 class Descifrador:
+	"""
+	A class implemented to facilitate the Decrypted work
+	"""
+
 	def __init__(self,file_frg):
+		"""
+		Descifrador's Builder 
+		Param:
+			file_frg:str : file_frg name's
+		"""
 		self.file_frg=file_frg
 
 		
-	def descifra(self, key_sha, cryp_file, original_ext):
-		if key_sha==None:
-			print("Clave o descifrador no conocido")
-			return
+	def descifra(self, cryp_file, original_ext):
+		"""
+		Decrypt the file using the frg-file and save it with his own original name
+		Param:
+			cryp_file: file with the extension .aes
+			original_ext (str): Original extension 
+		"""
 		shares=Actuador.convert_file_in_list(self.file_frg)
 		d=Decrypter( self.file_frg, shares)
 		d.save_decrypted_file(Actuador.change_to_new_term(cryp_file, original_ext))

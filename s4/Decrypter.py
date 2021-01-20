@@ -10,14 +10,18 @@ class Decrypter:
     """
     def __init__(self , cryp_file, shares):
         """
-        Constrcut a decrypter method
+        Construct a decrypter object
+
         Args:
             cryp_file (str): Encrypted file
             shares (list): List of shares to use
         """
         self.file = cryp_file
+        """ Encryted file"""
         self.shares = shares
+        """ (list) List of Shares"""
         self.mode = AES.MODE_CBC
+        """ mode for AES"""
 
         
     def decrypt_text(self, text):
@@ -58,6 +62,7 @@ class Decrypter:
         secret = self.get_secret() 
         num = str(secret)
         self.key = hashlib.sha256(num.encode('utf-8')).digest()
+        """ Recover of the key to decrypt the file"""
         decrypted_text = self.decrypt_text(encrypted_file)        
         return decrypted_text
     
@@ -90,4 +95,4 @@ class Decrypter:
             str: pass with sha256 applied
         """
         num = str(key)
-        return hashlib.sha256(num.encode('utf8')).digest()
+        return hashlib.sha256(num.encode('utf-8')).digest()

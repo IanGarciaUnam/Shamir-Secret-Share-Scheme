@@ -4,12 +4,14 @@ class Field():
     """
     def __init__(self, prime):
         """
-        Constrcuts a finite field given a prime number
+        Constructs a finite field given a prime number
 
         Args:
-            prime (int): a prime number
+            prime (int)-- a prime number
+           
         """
         self.p = prime
+        """  p(int) = prime assigned """
         
     def extended_euclides(self, a, b):
         """
