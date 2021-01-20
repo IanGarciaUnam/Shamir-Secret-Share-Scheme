@@ -1,8 +1,11 @@
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad
+
+from Crypto import Random
 from Poly import Polynomial
 import hashlib
 import random
+import sys
 
 class Encrypter:
     def __init__(self, in_file, key):
@@ -19,7 +22,9 @@ class Encrypter:
         self.file = in_file
         self.key = self.generate_number(key)
         self.mode = AES.MODE_CBC
+
         self.cipher = AES.new(self.alphanumric_pass(self.key), self.mode)
+
 
     def get_key(self):
         """
@@ -30,6 +35,22 @@ class Encrypter:
              a number-key
         """
         return self.key
+    
+    def encrypt_text(self, text):
+        """
+        A function that encrypts text
+
+        Args:
+            text (str): text to encrypt
+
+        Returns:
+            str: encrypted text
+        """
+        pad_text = pad(text, AES.block_size)
+        iv = Random.new().read(AES.block_size)
+        cipher = AES.new(self.key, self.mode, iv)
+        return iv + cipher.encrypt(pad_text)
+
         
     def encrypt_file(self):
         """
@@ -38,11 +59,25 @@ class Encrypter:
         Returns:
             file: The file encrypted with AES
         """
+
+        try:
+            
+            with open(self.file, 'rb') as f:
+                orig_file = f.read()
+                
+            enc_text = self.encrypt_text(orig_file)
+        
+        except:
+            print("The file: " + str(self.file) + " does not exist")
+            sys.exit(1)
+        
+
         with open(self.file, 'rb') as f:
             orig_file = f.read()
             
         
-        return self.cipher.encrypt(pad(orig_file, AES.block_size))
+        return enc_text
+    
     
 
     
@@ -53,6 +88,12 @@ class Encrypter:
         Args:
             out_name (str): the new name for the encrypted file
         """
+
+        with open(self.file + ".aes", 'wb') as f:
+            f.write(self.encrypt_file())
+            
+
+
         with open(out_name, 'wb') as f:
             f.write(self.encrypt_file())
             
