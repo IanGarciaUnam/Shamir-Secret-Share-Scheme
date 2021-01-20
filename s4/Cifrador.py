@@ -1,23 +1,51 @@
 from Crypto.Cipher import AES
+from Encrypter import Encrypter
 import hashlib
+from Actuador import Actuador
+
 class Cifrador:
 
+	def __init__(self,key,file_orig):
+		self.key=key
+		self.file=file_orig
+		self.encrypter=None
 
-	def cifra_contrasena(self, key:str):
+	def get_key_number(self):
+		if self.encrypter==None:
+			raise ValueError("You need to apply cifra(), before get_key_number")
+
+		return self.encrypter.get_key()
+
+	def cifra(self):
 		"""
-		Appy SHA-256 with the user's key as a parameter
+		A method that encrypte the file a write the encrypted one in the 
+		same route
 		Params:
-			key: str, passed by the user
-		Returns:
-			int of 256 bits
-
+			self. : The Cifrador's Object
 		"""
-		return int(hashlib.sha256(key.encode()).hexdigest(),16)
+
+		e=Encrypter(self.file, self.key)
+		e.encrypt_file()
+		new_file_name= Actuador.change_to_new_term(str(self.file),"aes")
+		e.save_encrypted_file(new_file_name)
+		self.encrypter=e
+
+class Descifrador:
+	def __init__(file_frg):
+		self.file_frg=file_frg
+
+		
+	def descifra(self, key_sha, cryp_file, original_ext):
+		if key_sha==None:
+			print("Clave o descifrador no conocido")
+			return
+
+		#d=Decrypter(self.encrypter, self.file_frg, key_sha)
+		#d.decipher_file()
+		#d.save_decrypted_file(Actuador.change_to_new_term(cryp_file, original_ext))
 
 
-	def cifra_archivo(self, key, file):
-		key_sha=hashlib.sha256(key.encode()).digest()
-		apply_AES(key_sha, file)
+
 
 
 

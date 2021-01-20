@@ -1,6 +1,8 @@
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad
+
 from Crypto import Random
+from Poly import Polynomial
 import hashlib
 import random
 import sys
@@ -20,6 +22,9 @@ class Encrypter:
         self.file = in_file
         self.key = self.generate_number(key)
         self.mode = AES.MODE_CBC
+
+        self.cipher = AES.new(self.alphanumric_pass(self.key), self.mode)
+
 
     def get_key(self):
         """
@@ -45,6 +50,7 @@ class Encrypter:
         iv = Random.new().read(AES.block_size)
         cipher = AES.new(self.key, self.mode, iv)
         return iv + cipher.encrypt(pad_text)
+
         
     def encrypt_file(self):
         """
@@ -53,6 +59,7 @@ class Encrypter:
         Returns:
             file: The file encrypted with AES
         """
+
         try:
             
             with open(self.file, 'rb') as f:
@@ -64,10 +71,15 @@ class Encrypter:
             print("The file: " + str(self.file) + " does not exist")
             sys.exit(1)
         
+
+        with open(self.file, 'rb') as f:
+            orig_file = f.read()
             
         
         return enc_text
     
+    
+
     
     def save_encrypted_file(self, out_name):
         """
@@ -76,10 +88,23 @@ class Encrypter:
         Args:
             out_name (str): the new name for the encrypted file
         """
+
         with open(self.file + ".aes", 'wb') as f:
             f.write(self.encrypt_file())
             
 
+
+        with open(out_name, 'wb') as f:
+            f.write(self.encrypt_file())
+            
+    def get_cipherIV(self):
+        """
+        Returns the IV from the cipher
+
+        Returns:
+            list: IV from cipher
+        """
+        return self.cipher.iv
     
     def generate_number(self, key):
         """
