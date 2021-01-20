@@ -1,3 +1,4 @@
+import sys
 from Field import Field
 field = Field(208351617316091241234326746312124448251235562226470491514186331217050270460481)
 class LagrangeInterpolation:
@@ -24,7 +25,7 @@ class LagrangeInterpolation:
         return field.division(num, dem) # (X - x_j) (x_i - x_j)^-1 -> where (x_i - x_j)^-1 is the inverse multiplicative
     
     @staticmethod
-    def reconstruct_secret(shares, x, k):
+    def reconstruct_secret(shares, x):
         """
         Reconstructs the secret from a given list of shares
 
@@ -38,14 +39,9 @@ class LagrangeInterpolation:
         Returns:
             int: the secret
         """
-        if len(shares) < k:
-            raise ValueError("Unable to reconstruct the secret with this data")
         
         res = 0
-        
-        if len(shares) > k:
-            shares = shares[:k]
-            
+          
         x_points, y_points = zip(*shares)
         for i in range(len(x_points)):
             poly = LagrangeInterpolation.lagrange_polynomial(x_points[i], x_points, x)

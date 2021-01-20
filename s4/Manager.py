@@ -53,14 +53,16 @@ class Verifier_Builder:
 		if not os.path.exists(encrypted_file) or not os.path.isfile(encrypted_file):
 			print("Check your original file- The path is wrong or the file doesn't exists\n")
 			print(USO)
-			System.exit()
+			System.exit(1)
+		self.file_frg=file_frg
+		self.encrypted_file=encrypted_file
 
 
 	def work_to_descipher(self):
 		list_in=Actuador.convert_file_in_list(self.file_frg)
 		key= LGI.reconstruct_secret(list_in, 0) #Not Woring but is an idealization
-		d=Descifrador(file_frg)
-		d.descifra(key,self.file_frg, Actuador.get_original_ext(file_frg))
+		d=Descifrador(self.file_frg)
+		d.descifra(key,self.encrypted_file, Actuador.get_original_ext(str(self.encrypted_file)))
 
 		
 

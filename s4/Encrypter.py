@@ -1,8 +1,6 @@
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad
-
 from Crypto import Random
-from Polynomio import Lagrange_Polynomial
 import hashlib
 import random
 import sys
@@ -20,11 +18,8 @@ class Encrypter:
             k (int) = mininum number of shares
         """
         self.file = in_file
-        self.key = key#self.generate_number(key)
+        self.key = self.generate_number(key)
         self.mode = AES.MODE_CBC
-
-        self.cipher = AES.new(self.alphanumric_pass(self.key), self.mode)
-
 
     def get_key(self):
         """
@@ -48,9 +43,9 @@ class Encrypter:
         """
         pad_text = pad(text, AES.block_size)
         iv = Random.new().read(AES.block_size)
-        cipher = AES.new(self.key, self.mode, iv)
+        password = self.alphanumric_pass(self.key)
+        cipher = AES.new(password, self.mode, iv)
         return iv + cipher.encrypt(pad_text)
-
         
     def encrypt_file(self):
         """
@@ -59,22 +54,21 @@ class Encrypter:
         Returns:
             file: The file encrypted with AES
         """
-        
+        try:
             
-        with open(self.file, 'rb') as f:
-            orig_file = f.read()
-        enc_text = self.encrypt_text(orig_file)
-
+            with open(self.file, 'rb') as f:
+                orig_file = f.read()
+                
+            enc_text = self.encrypt_text(orig_file)
         
-
-        with open(self.file, 'rb') as f:
-            orig_file = f.read()
+        except:
+            print("The file: " + str(self.file) + " does not exist")
+            sys.exit(1)
+        
             
         
         return enc_text
     
-    
-
     
     def save_encrypted_file(self, out_name):
         """
@@ -83,23 +77,10 @@ class Encrypter:
         Args:
             out_name (str): the new name for the encrypted file
         """
-
         with open(self.file + ".aes", 'wb') as f:
             f.write(self.encrypt_file())
             
 
-
-        with open(out_name, 'wb') as f:
-            f.write(self.encrypt_file())
-            
-    def get_cipherIV(self):
-        """
-        Returns the IV from the cipher
-
-        Returns:
-            list: IV from cipher
-        """
-        return self.cipher.iv
     
     def generate_number(self, key):
         """

@@ -11,7 +11,7 @@ class Lagrange_Polynomial():
     Args:
         object ([type]): [description]
     """
-    def __init__(self, prime_number, key):
+    def __init__(self, prime_number, k, n,key):
         """
         Constructs Lagrange Polymial given a prime to use finite field arithmetic
         Args:
@@ -23,25 +23,25 @@ class Lagrange_Polynomial():
         self.field_p = Field(prime_number)
         self.key = key
         self.partial_randomNumber = functools.partial(random.SystemRandom().randint, 0)
-        #self.k = k
-        #self.n = n
+        self.k = k
+        self.n = n
         self.polynomial = Poly(self.generate_random_poly())
         
         
-    def generate_random_poly(self,k):
+    def generate_random_poly(self):
         """
         Generate a random polynomial
 
         Returns:
             list: List of coeficcients of a polynomial
         """
-        poly = [self.partial_randomNumber(self.field_p.get_prime() - 1) for i in range(k)]
+        poly = [self.partial_randomNumber(self.field_p.get_prime() - 1) for i in range(self.k)]
         
         poly[0] = self.key # Key
         
         return poly
         
-    def generate_random_shares(self,n):
+    def generate_random_shares(self):
         """
         Generates random shares from our random polynomial
 
@@ -51,7 +51,7 @@ class Lagrange_Polynomial():
         return [
             # We use % self.p below to take advantage of finite field arithmetic
             (x, polynomial.polyval(x, self.polynomial.coef) % self.field_p.get_prime())
-            for x in range(1, n + 1)
+            for x in range(1, self.n + 1)
         ]
         
     def get_poly(self):
@@ -97,13 +97,8 @@ class Lagrange_Polynomial():
         Returns:
             int: the secret
         """
-        #if len(shares) < self.k:
-            #raise ValueError("Unable to reconstruct the secret with this data")
-        
         res = 0
         
-        #if len(shares) > self.k:
-        #    shares = shares[:self.k]
             
         x_points, y_points = zip(*shares)
         for i in range(len(x_points)):

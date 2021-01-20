@@ -1,5 +1,6 @@
 from Crypto.Cipher import AES
 from Encrypter import Encrypter
+from Decrypter import Decrypter
 import hashlib
 from Actuador import Actuador
 
@@ -31,7 +32,7 @@ class Cifrador:
 		self.encrypter=e
 
 class Descifrador:
-	def __init__(file_frg):
+	def __init__(self,file_frg):
 		self.file_frg=file_frg
 
 		
@@ -39,9 +40,8 @@ class Descifrador:
 		if key_sha==None:
 			print("Clave o descifrador no conocido")
 			return
-
-		d=Decrypter(self.encrypter, self.file_frg, key_sha)
-		d.decipher_file()
+		shares=Actuador.convert_file_in_list(self.file_frg)
+		d=Decrypter( self.file_frg, shares)
 		d.save_decrypted_file(Actuador.change_to_new_term(cryp_file, original_ext))
 
 

@@ -37,5 +37,14 @@ class Actuador:
 		out_list=[]
 		arch= open(file_frg, "r")
 		for line in arch.readlines():
-			print("")
+			little_list=line.split(",")
+			x=int(little_list[0])
+			y=int(little_list[1])
+			out_list.append((x,y))
+		return out_list
+
+	@staticmethod
+	def get_original_ext(encrypted_file:str):
+		chain=encrypted_file.split(".")
+		return chain[1]
 
