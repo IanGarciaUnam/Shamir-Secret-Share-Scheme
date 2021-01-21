@@ -98,11 +98,10 @@ class Verifier_Builder:
 		"""
 		Analyze fragments of tuples and decrypt the aes file and save it in a safe way
 		
-		"""
-		list_in=Actuador.convert_file_in_list(self.file_frg)
-		key= LGI.reconstruct_secret(list_in, 0) #Not Woring but is an idealization
+		"""	
 		d=Descifrador(self.file_frg)
 		d.descifra(self.encrypted_file, Actuador.get_original_ext(str(self.encrypted_file)))
+		print("============File Decrypted Succesfully============")
 
 		
 

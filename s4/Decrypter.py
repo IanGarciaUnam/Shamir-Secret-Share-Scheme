@@ -1,30 +1,33 @@
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import unpad
 from Encrypter import Encrypter
+from base64 import b64decode
 from LaGrangeInterpolation import LagrangeInterpolation
-import hashlib, sys
+import hashlib, sys, os
+
 
 class Decrypter:
     """
     A class that has decrypting methods
+
     """
     def __init__(self , cryp_file, shares):
         """
-        Construct a decrypter object
+        Constrcut a decrypter method
 
         Args:
             cryp_file (str): Encrypted file
             shares (list): List of shares to use
         """
         self.file = cryp_file
-        """ Encryted file"""
+        """ file (str) = File's name"""
         self.shares = shares
         """ (list) List of Shares"""
-        self.mode = AES.MODE_CBC
-        """ mode for AES"""
+        self.mode = AES.MODE_CFB
+        """ mode = Mode of AES encrypter"""
 
         
-    def decrypt_text(self, text):
+    def decrypt_text(self, text, key):
         """
         Decrypts a given text
 
@@ -35,20 +38,17 @@ class Decrypter:
         Returns:
             str: decrypted text
         """
-        iv = text[:AES.block_size]
-        password = self.alphanumric_pass(self.key)
-        #try:
+        iv = 16 * b'0'
+        password = self.alphanumric_pass(key)
         cipher = AES.new(password, self.mode, iv)
-        decrypted_text = cipher.decrypt(text[AES.block_size:])
-        #except:
-        #print("Clave incorrecta, no se pudo decifrar el archivo")
-        #sys.exit(1)
+        decrypted_text = cipher.decrypt(text)
         
-        return unpad(decrypted_text, AES.block_size)
+        return decrypted_text
         
     def decipher_file(self):
         """
         Decrypts the encrypted file
+
         Returns:
             file: Decrypted file
         """
@@ -57,31 +57,32 @@ class Decrypter:
                 encrypted_file = f.read()
         except:
             print("There was an error while reading " + str(self.file))
-           
+        
         
         secret = self.get_secret() 
         num = str(secret)
-        self.key = hashlib.sha256(num.encode('utf-8')).digest()
-        """ Recover of the key to decrypt the file"""
-        decrypted_text = self.decrypt_text(encrypted_file)        
+        decrypted_text = self.decrypt_text(encrypted_file, num)        
         return decrypted_text
     
     def get_secret(self):
         """
         Gets the password to decrypt the crypted file
+
         Returns:
             int: the password to decrypt
         """
         return LagrangeInterpolation.reconstruct_secret(self.shares, 0)
         
     
-    def save_decrypted_file(self, new_name):
+    def save_decrypted_file(self):
         """
         Saves the decrypted file
+        
         Args:
             new_name (str): new name for the the decrypted file
         """
-        with open(new_name, 'wb') as f:
+        
+        with open(self.file[:-4], 'wb') as f:
             f.write(self.decipher_file())
             
     def alphanumric_pass(self, key):
@@ -95,4 +96,4 @@ class Decrypter:
             str: pass with sha256 applied
         """
         num = str(key)
-        return hashlib.sha256(num.encode('utf-8')).digest()
+        return hashlib.sha256(num.encode('utf8')).digest()

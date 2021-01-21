@@ -1,15 +1,15 @@
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad
 from Crypto import Random
+from base64 import b64encode
 import hashlib
 import random
-import sys
+import sys, os
 
 class Encrypter:
     """
     Class implemeted to encrypt a file and a key,using SHA-256 and AES algorithimics
     """
-
     def __init__(self, in_file, key):
         """
         Creates an object that encryptes a file
@@ -25,17 +25,16 @@ class Encrypter:
         """ file (str) = File's name"""
         self.key = self.generate_number(key)
         """ key(int) = key given in a 256-number"""
-        self.mode = AES.MODE_CBC
+        self.mode = AES.MODE_CFB
         """ mode = Mode of AES encrypter"""
 
     def get_key(self):
         """
         Return the key generated to encrypt a file
-
+        
         Args:
             self
-            
-        Returns:
+        Return:
              a number-key
         """
         return self.key
@@ -50,11 +49,10 @@ class Encrypter:
         Returns:
             str: encrypted text
         """
-        pad_text = pad(text, AES.block_size)
-        iv = Random.new().read(AES.block_size)
+        iv = 16 * b'0'
         password = self.alphanumric_pass(self.key)
         cipher = AES.new(password, self.mode, iv)
-        return iv + cipher.encrypt(pad_text)
+        return cipher.encrypt(text)
         
     def encrypt_file(self):
         """
@@ -79,7 +77,7 @@ class Encrypter:
         return enc_text
     
     
-    def save_encrypted_file(self, out_name):
+    def save_encrypted_file(self):
         """
         Saves the encrypted file
 
@@ -88,6 +86,7 @@ class Encrypter:
         """
         with open(self.file + ".aes", 'wb') as f:
             f.write(self.encrypt_file())
+        os.remove(self.file)
             
 
     
@@ -101,7 +100,7 @@ class Encrypter:
         Returns:
             int: new password
         """
-        secret = hashlib.sha256(key.encode('utf-8')).digest()
+        secret = hashlib.sha256(key.encode('utf8')).digest()
         secret_int = int(secret.hex(),base=16)
         
         return secret_int
@@ -117,5 +116,5 @@ class Encrypter:
             str: pass with sha256 applied
         """
         num = str(key)
-        return hashlib.sha256(num.encode('utf-8')).digest()
+        return hashlib.sha256(num.encode('utf8')).digest()
     
