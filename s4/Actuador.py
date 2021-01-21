@@ -1,6 +1,7 @@
 import getpass as gt
 from Crypto.Cipher import AES
 import hashlib
+import sys
 
 class Actuador:
 	"""
@@ -72,6 +73,9 @@ class Actuador:
 				continue
 				
 			out_list.append((x,y))
+
+		if len(out_list)==0:
+			sys,exit(1)
 		return out_list
 
 	@staticmethod

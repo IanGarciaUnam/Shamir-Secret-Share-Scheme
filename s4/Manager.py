@@ -51,12 +51,11 @@ class Manager:
 		""" Polynomial Degree """
 
 
-	def work_to_cipher(self):
+	def work_to_cipher(self,secret):
 		"""
 		Cipher the file, generate the frg and aes file
 
 		"""
-		secret = Actuador.get_secret("Please type your password [We will keep it secret]")
 		c= Cifrador(secret,self.file_original)
 		c.cifra()
 		key=c.get_key_number()
@@ -101,7 +100,6 @@ class Verifier_Builder:
 		"""	
 		d=Descifrador(self.file_frg)
 		d.descifra(self.encrypted_file, Actuador.get_original_ext(str(self.encrypted_file)))
-		print("============File Decrypted Succesfully============")
 
 		
 

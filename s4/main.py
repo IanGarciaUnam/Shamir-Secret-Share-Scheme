@@ -1,4 +1,5 @@
 from Manager import Manager,Verifier_Builder
+from Actuador import Actuador
 import sys as System
 
 USO="Usage python main.py [c|d] <file-original | file frg>  <total-points required >1 | encrypted file> <total \"minimum points required\" >1> "
@@ -34,6 +35,10 @@ class Main:
 		"""
 		Verify if the option is correct and given in a correct way
 		"""
+		if len(self.args)<=1:
+			print(USO)
+			System.exit(1)
+
 		if len(self.args)==1 or self.args==None:
 			print(USO)
 			System.exit(1)
@@ -44,7 +49,8 @@ class Main:
 
 		if self.args[1]=='c':
 			m=Manager(self.args[2], int(self.args[3]), int(self.args[4]))
-			m.work_to_cipher()
+			secret=Actuador.get_secret("Please type your password [We will keep it secret]")
+			m.work_to_cipher(secret)
 			System.exit(1)
 
 		if self.args[1]=='d' and len(self.args)<4 or self.args == None:
