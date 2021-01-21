@@ -65,8 +65,12 @@ class Actuador:
 		arch= open(file_frg, "r")
 		for line in arch.readlines():
 			little_list=line.split(",")
-			x=int(little_list[0])
-			y=int(little_list[1])
+			try:
+				x=int(little_list[0])
+				y=int(little_list[1])
+			except:
+				continue
+				
 			out_list.append((x,y))
 		return out_list
 

@@ -73,9 +73,7 @@ class Descifrador:
 			original_ext (str): Original extension 
 		
 		"""
-		#if key_sha == None:
-			#print("Clave o descifrador no conocido")
-			#return
+
 
 		shares = Actuador.convert_file_in_list(self.file_frg)
 		d = Decrypter(cryp_file, shares)

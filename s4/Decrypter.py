@@ -77,7 +77,7 @@ class Decrypter:
     def save_decrypted_file(self):
         """
         Saves the decrypted file
-        
+
         Args:
             new_name (str): new name for the the decrypted file
         """

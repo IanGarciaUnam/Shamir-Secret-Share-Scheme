@@ -29,20 +29,20 @@ class Manager:
 		if not os.path.exists(file_original) or not os.path.isfile(file_original):
 			print("Check your original file- The path is wrong or the file doesn't exists\n")
 			print(USO)
-			System.exit()
+			System.exit(1)
 
 		if not isinstance(total_points,int):
 			print("Total Points is not an integer value, check your data\n")
 			print(USO)
-			System.exit()
+			System.exit(1)
 		if not isinstance(minimum_points, int):
 			print("Minimum points required is not an Integer value, check your data\n")
 			print(USO)
-			System.exit()
+			System.exit(1)
 		if minimum_points > total_points:
 			print("Total points ought to be bigger or at least equals than Minimum points\n")
 			print(USO)
-			System.exit()
+			System.exit(1)
 		self.file_original=file_original
 		""" Original file to be decrypted"""
 		self.total_points=total_points
@@ -62,7 +62,7 @@ class Manager:
 		key=c.get_key_number()
 		p = Polynomio(PRIMO, self.minimum_points, self.total_points, key)
 		out_list=p.generate_random_shares()
-		frg_file=Actuador.change_to_new_term(self.file_original,"frg")
+		frg_file=self.file_original+".frg"#Actuador.change_to_new_term(self.file_original,"frg")
 		Actuador.convert_list_in_file(out_list, frg_file)
 
 class Verifier_Builder:

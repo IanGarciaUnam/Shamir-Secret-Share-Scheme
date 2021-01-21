@@ -3,8 +3,8 @@ import sys as System
 
 USO="Usage python main.py [c|d] <file-original | file frg>  <total-points required >1 | encrypted file> <total \"minimum points required\" >1> "
 """ Usage"""
-__author__="David Hernández Uriostegui-, Ian Israel García Vázquez-317097364"
-""" Authors David Hernández Uriostegui-, Ian Israel García Vázquez-317097364""" 
+__author__="David Hernández Uriostegui-420003708, Ian Israel García Vázquez-317097364"
+""" Authors David Hernández Uriostegui-420003708, Ian Israel García Vázquez-317097364""" 
 __version__="1.0.0"
 """ version 1.0.0"""
 __license__= "GNU"
