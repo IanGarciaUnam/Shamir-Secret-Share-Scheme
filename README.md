@@ -10,7 +10,7 @@
 
 
 
-#About
+# About
 An implementation of the Shamir Secrete Share Scheme
 
 
@@ -21,7 +21,7 @@ Primero que nada, es necesario mencionar que se encuentra escrito en Python, baj
 Asimismo es necesario instalar algunas bibliotecas extras, no es necesario que te preocupes por instalar de forma correcta cada una de ellas, gracias a un script de auto-instalación
 
 
-## Requirements
+## Requerimientos
 * Verifica utilizar una versión superior a Python3.6 :
 ```
 python --version
@@ -40,16 +40,61 @@ python --version
 
 * Tener instalado pip "Pip Installs Packages" para instalar las biblotecas necesarias
 
-## Instalation 
+## Instalación
+
+* Primero que nada deberás instalar todas las bibliotecas que se necesitan para que el progrmama corra, para esto sólo corre el siguiente comando
+
+```
+./installer.sh
+```
+
+# Uso
+* Primero que nada para comprobar que todo este en orden correremos la prubas unitarias, para correrlas ejecutar el siguiente comando
+```
+bash test.sh
+```
+* El programa funciona de 2 maneras, para encriptar y para decriptar archivos. 
+* Este programa implementa el Shamir Secrete Share Scheme, entonces necesitamos generar un polinomio de grado k-1 y n evaluaciones del polinomio
+
+* Para encriptar un archivo se debe ejecutar el siguiente comando
+```
+python3 main.py c <archivo> <k> <n>
+```
+* k son el número minimo de evaluaciones para desencriptar el archivo
+* n son el número de evaluaciones que se harán para después repartirlas
+
+* Después de haber encriptado el archivo, el archivo original se borrará y habrá 2 nuevos archivos que tendrán los nombres:
+```
+archivo.frg 
+```
+y
+```
+archivo.aes
+```
+* El primer archivo es un archivo donde se guardaron las n evaluaciones, para después ser repartidas
+* El segundo archivo es el archivo encriptado
 
 
+* Ahora para descencriptar un archivo se deberá ejecutar el seguiente comando
+```
+python3 main.py d archivo.frg archivo.aes
+```
+* archivo.frg no necesariamente debe ser el archivo anteriormente generado, puede ser otro archivo que siga la misma nomenclatura que el archivo.frg originalmente generado, pero para poder descrinptar de buena forma el archivo.aes se necesitan minimo k evaluaciones
 
-# Usage
+* archivo.aes es el archivo que se generó al encriptar el archivo original
 
+* Si el archivo se desencritó de manera correcta el archivo original deberá aparecer de nuevo con su contenido original, si no es asi, es porque se evaluó menos de k evaluaciones o porque las evaluciones no eran las correctas.
 
-
-## Generate Documentation
-
+## Generar Documentación
+* Para generar la documentación sobre el proyecto se debe correr el siguiente comando
+```
+bash python-docs.sh
+```
+* Esto creará una carpeta llamada 
+```
+docs
+```
+* En la cual se encontrará toda la doc
 
 
 # Desarrollado por:
@@ -67,4 +112,4 @@ python --version
 [![forthebadge powered-by-electricity](https://forthebadge.com/images/badges/powered-by-electricity.svg)](http://ForTheBadge.com)  
 
 ---
-[Go up](#Cloud_Coverage_Index_Reporter)
+[Go up](#Shamir Secret Share Scheme)
