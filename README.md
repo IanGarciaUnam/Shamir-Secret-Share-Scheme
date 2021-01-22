@@ -17,7 +17,7 @@ An implementation of the Shamir Secrete Share Scheme
 
 
 # Como empezar
-Primero que nada, es necesario mencionar que se encuentra escrito en Python, bajo las versiones superiores o iguales a Python3.8, por ello es recomendable actualizar a la versión de Python más reciente a tu ordenador, de lo contrario podrían ocurrir algunas fallas, y  de igual manera recomendamos ejecutar en ordenadores con Sistema Operativo GNU LINUX en cualquiera de sus versiones. 
+Es necesario mencionar que se encuentra escrito en Python, bajo las versiones superiores o iguales a Python3.8, por ello es recomendable actualizar a la versión de Python más reciente a tu ordenador, de lo contrario podrían ocurrir algunas fallas, y  de igual manera recomendamos ejecutar en ordenadores con Sistema Operativo GNU LINUX en cualquiera de sus versiones. 
 Asimismo es necesario instalar algunas bibliotecas extras, no es necesario que te preocupes por instalar de forma correcta cada una de ellas, gracias a un script de auto-instalación
 
 
@@ -49,7 +49,7 @@ python --version
 ```
 
 # Uso
-* Primero que nada para comprobar que todo este en orden correremos la prubas unitarias, para correrlas ejecutar el siguiente comando
+* Para comprobar que todo este en orden correremos la pruebas unitarias, para correrlas ejecutar el siguiente comando
 ```
 bash test.sh
 ```
@@ -58,10 +58,13 @@ bash test.sh
 
 * Para encriptar un archivo se debe ejecutar el siguiente comando
 ```
-python3 main.py c <archivo> <k> <n>
+python3 main.py c <archivo> <n> <k>
 ```
-* k son el número minimo de evaluaciones para desencriptar el archivo
-* n son el número de evaluaciones que se harán para después repartirlas
+* n [ENTERO]son el número de evaluaciones que se harán para después repartirlas 
+* k [ENTERO]son el número minimo de evaluaciones para desencriptar el archivo
+```
+n >= k > 1
+```
 
 * Después de haber encriptado el archivo, el archivo original se borrará y habrá 2 nuevos archivos que tendrán los nombres:
 ```
@@ -75,7 +78,7 @@ archivo.aes
 * El segundo archivo es el archivo encriptado
 
 
-* Ahora para descencriptar un archivo se deberá ejecutar el seguiente comando
+* Ahora para descencriptar un archivo se deberá ejecutar el siguiente comando
 ```
 python3 main.py d archivo.frg archivo.aes
 ```
@@ -90,11 +93,26 @@ python3 main.py d archivo.frg archivo.aes
 ```
 bash python-docs.sh
 ```
-* Esto creará una carpeta llamada 
+* La documentación es visible en  
 ```
-docs
+/docs
 ```
-* En la cual se encontrará toda la doc
+
+###Nota Importante
+Si desea eliminar o agregar lineas de claves al archivo .frg, deberá ingresar clave por línea, es decir de la forma
+```
+QQQQQQQQQQQQQQQQQQQQQQQ,XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+WWWWWWWWWWWWWWWWWWWWWWW,MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+SSSSSSSSSSSSSSSSSSSSSSS,DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+```
+pues en caso diferente, el proceso de desencritpado no será el correcto o podrían perderse datos valiosos
+
+--------Forma Incorrecta-----------
+```
+QQQQQQQQQQQQQQQQQQQQQ,XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX WWWWWWWWWWWWWWWWWWWWWWWWWWWWWW,MMMMMMMMMMMMMMMMMMMMMMMMMMMMMM 
+```
+O semejantes
+
 
 
 # Desarrollado por:
