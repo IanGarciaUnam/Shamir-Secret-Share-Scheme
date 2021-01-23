@@ -38,11 +38,20 @@ python --version
 ```
 ./installer.sh
 ```
+En caso de que el script installer, no logré correr de forma exitosa, utilice
+```
+pip install -r requirements.txt
+```
 
 # Uso
 * Para comprobar que todo este en orden correremos la pruebas unitarias, para correrlas ejecutar el siguiente comando
 ```
 bash test.sh
+```
+o bien
+
+```
+./test.sh
 ```
 * El programa funciona de 2 maneras, para encriptar y para decriptar archivos. 
 * Este programa implementa el Shamir Secrete Share Scheme, entonces necesitamos generar un polinomio de grado k-1 y n evaluaciones del polinomio

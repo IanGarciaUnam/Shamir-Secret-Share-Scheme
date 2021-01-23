@@ -55,10 +55,13 @@ class Lagrange_Polynomial():
         Returns:
             list: A list of tuples (x,y), where x is the point, and y = P(x)
         """
+        x_points = []
+        for _ in range(1, self.n + 1):
+            x_points.append(self.partial_randomNumber(self.field_p.get_prime() - 1))
         return [
             # We use % self.p below to take advantage of finite field arithmetic
-            (x, polynomial.polyval(x, self.polynomial.coef) % self.field_p.get_prime())
-            for x in range(1, self.n + 1)
+            (x_points[i], polynomial.polyval(x_points[i], self.polynomial.coef) % self.field_p.get_prime())
+            for i in range(len(x_points))
         ]
         
     def get_poly(self):
