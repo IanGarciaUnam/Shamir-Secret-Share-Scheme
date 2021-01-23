@@ -2,7 +2,7 @@ from Manager import Manager,Verifier_Builder
 from Actuador import Actuador
 import sys as System
 
-USO="Usage python main.py [c|d] <file-original | file frg>  <total-points required >1 | encrypted file> <total \"minimum points required\" >1> "
+USO="Usage\n Encriptar: python main.py [c] <file-original> [total-points required >1 ] <total> \"minimum points required\" >1>  \n Decriptar: python main.py [d] <file-frg> <file-aes>"
 """ Usage"""
 __author__="David Hernández Uriostegui-420003708, Ian Israel García Vázquez-317097364"
 """ Authors David Hernández Uriostegui-420003708, Ian Israel García Vázquez-317097364""" 

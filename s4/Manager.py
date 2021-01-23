@@ -7,7 +7,7 @@ from Polynomio import Lagrange_Polynomial as Polynomio
 import os
 import sys as System
 
-USO="Usage python main.py [c|d] <file-original> <total-points required >1 > <total> \"minimum points required\" >1> "
+USO="Usage\n Encriptar: python main.py [c] <file-original> [total-points required >1 ] <total> \"minimum points required\" >1>  \n Decriptar: python main.py [d] <file-frg> <file-aes>"
 """ Usage"""
 PRIMO=208351617316091241234326746312124448251235562226470491514186331217050270460481
 """ BIG PRIMO OF 257 """

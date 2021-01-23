@@ -53,6 +53,13 @@ o bien
 ```
 ./test.sh
 ```
+En caso de que el script incurra en fallas, puedes utilizar:
+```
+cd s4/
+python -m pytest
+python -m pytest -v
+```
+
 * El programa funciona de 2 maneras, para encriptar y para decriptar archivos. 
 * Este programa implementa el Shamir Secrete Share Scheme, entonces necesitamos generar un polinomio de grado k-1 y n evaluaciones del polinomio
 
@@ -96,6 +103,12 @@ bash python-docs.sh
 * La documentación es visible en  
 ```
 /docs
+```
+
+En caso de que el script incurra en falla puede utilizar
+```
+mkdir docs
+pydoctor --make-html --html-output=docs/ s4/
 ```
 
 ###Nota Importante
