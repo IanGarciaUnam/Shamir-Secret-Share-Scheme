@@ -1,5 +1,5 @@
 #!/bin/sh
-pip install pytest
-pip install pycryptodome
-pip install Crypto
-pip install pydoctor
+sudo pip install pytest
+sudo pip install pycryptodome
+sudo pip install Crypto
+sudo pip install pydoctor

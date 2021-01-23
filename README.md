@@ -4,17 +4,8 @@
 [![Generic badge](https://img.shields.io/badge/contributors-2-blue)](https://shields.io/)  
 [![forthebadge made-with-python](https://forthebadge.com/images/badges/made-with-python.svg)](https://www.python.org/)  
 
-
-
-
-
-
-
 # About
 An implementation of the Shamir Secrete Share Scheme
-
-
-
 
 # Como empezar
 Es necesario mencionar que se encuentra escrito en Python, bajo las versiones superiores o iguales a Python3.8, por ello es recomendable actualizar a la versión de Python más reciente a tu ordenador, de lo contrario podrían ocurrir algunas fallas, y  de igual manera recomendamos ejecutar en ordenadores con Sistema Operativo GNU LINUX en cualquiera de sus versiones. 
@@ -129,5 +120,4 @@ O semejantes
 ![forthebadge biult-with-love](https://forthebadge.com/images/badges/built-with-love.svg) 
 [![forthebadge powered-by-electricity](https://forthebadge.com/images/badges/powered-by-electricity.svg)](http://ForTheBadge.com)  
 
----
-[Go up](#Shamir Secret Share Scheme)
+
